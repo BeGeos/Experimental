@@ -28,7 +28,7 @@ A node has attributes:
 * **left**: indicates the left child;
 * **right**: indicates the right child.
 
-###AVLs
+### AVLs
 This type of tree inherits from the BST, therefore is binary and follows the same rule for insertion.
 In this case, the method are the aforementioned from the BST class as well as:
 * *avl_insert()*  : It differs from *insert()* because it keeps track of the steps of each node to be inserted, 

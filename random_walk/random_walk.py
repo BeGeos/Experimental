@@ -34,7 +34,7 @@ for walks in range(1, 31):  # number of blocks
             no_transport += 1
     avg_distance = avg_distance/number_of_walks
     walks_avg_distance[walks] = round(avg_distance, 3)
-    probability = float(no_transport/number_of_walks)*100
+    probability = float(no_transport/number_of_walks) * 100
     probability_list.append(round(probability, 3))
     walks_ratio.append(round(avg_distance/walks, 3))
 

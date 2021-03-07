@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
     exercise to try recursion. """
 
 global_coordinates = [(0, 0)]
-plot = False  # to run plots type True
+plot = True  # to run plots type True
 
 
 def random_walk_forward(n, tmp_x=0, tmp_y=0, x=0, y=0):
@@ -36,29 +36,41 @@ def random_walk_forward(n, tmp_x=0, tmp_y=0, x=0, y=0):
 
 """ For plotting the random walk """
 
-random_walk_forward(10)  # number of blocks
-if not plot:
-    for each in global_coordinates:
-        print("[{}]".format(each))
 
-# print(global_coordinates) /// Debugging option
-else:
-    x_walk = []
-    y_walk = []
-    for xs, ys in global_coordinates:
-        x_walk.append(xs)
-        y_walk.append(ys)
+def plot_it(plots=False):
+    global global_coordinates
 
-    fig = plt.figure()
-    ax = plt.gca()
-    ax.spines['left'].set_position('zero')
-    ax.spines['right'].set_color('none')
-    ax.spines['bottom'].set_position('zero')
-    ax.spines['top'].set_color('none')
-    plt.xlim(-25, 25)
-    plt.ylim(-25, 25)
-    ax.axes.xaxis.set_ticklabels([])
-    ax.axes.yaxis.set_ticklabels([])
-    # ax.grid(True)
-    ax.plot(x_walk, y_walk, 'r-o')
-    plt.show()
+    if not plots:
+        for each in global_coordinates:
+            print("[{}]".format(each))
+
+    # print(global_coordinates) /// Debugging option
+    else:
+        x_walk = []
+        y_walk = []
+        for xs, ys in global_coordinates:
+            x_walk.append(xs)
+            y_walk.append(ys)
+
+        fig = plt.figure()
+        ax = plt.gca()
+        ax.spines['left'].set_position('zero')
+        ax.spines['right'].set_color('none')
+        ax.spines['bottom'].set_position('zero')
+        ax.spines['top'].set_color('none')
+        plt.xlim(-25, 25)
+        plt.ylim(-25, 25)
+        ax.axes.xaxis.set_ticklabels([])
+        ax.axes.yaxis.set_ticklabels([])
+        # ax.grid(True)
+        ax.plot(x_walk, y_walk, 'r-o')
+        plt.show()
+
+
+def main():
+    random_walk_forward(50)  # number of blocks
+    plot_it(plot)
+
+
+if __name__ == '__main__':
+    main()

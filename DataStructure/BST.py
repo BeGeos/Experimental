@@ -1,4 +1,5 @@
-"""Implementation of binary search tree:
+"""
+    Implementation of binary search tree:
     - It's a rooted tree;
     - The left node is smaller than and the right node is bigger than the root on the nth node;
     - Every node has a key and a value
@@ -27,11 +28,24 @@ class BST:
         self.build_tree()
 
     def build_tree(self):
+        """
+        To insert the arguments passed in the __init__ method.
+        Arguments can be inserted manually via the insert() method
+        """
+
         for key in self.keys:
             self.insert(self.root, key)
         return
 
     def insert(self, node, key):
+        """
+        An insert method with checks to keys for insertion
+
+        :param node: of class Node, indicates a single node of the tree
+        :param key: of class Any, indicates the value inserted in the node
+        :return: of class Node, it return the node with attributes
+        """
+
         if node is None:
             return Node(key)
         else:
@@ -52,7 +66,7 @@ class BST:
             - Air Traffic Queue. Check whether the time of insertion already exists then return False;
               otherwise, if landing time is +- set minutes (3 min) from other landing times return False;
               Finally, if the check is successful return True and insert value in the queue.
-
+        :return: boolean, True if the key follows the imposed constrains, False if it does not
         """
 
         if node is None or abs(node.key - key) >= self.k:
@@ -70,6 +84,12 @@ class BST:
         return self.tree
 
     def search(self, node, key):
+        """
+        :param node: of class Node, indicates the node. It should be root by default.
+        :param key: of class Any, indicates the value to search
+        :return: of class Node, returns the node with key == key
+        """
+
         if node is None or node.key == key:
             return node
         if key < node.key:
@@ -77,11 +97,23 @@ class BST:
         return self.search(node.right, key)
 
     def minimum(self, node):
+        """
+        Method to retrieve the min from the tree --> complexity ~ O(lg(n))
+        :param node: of class Node
+        :return: of class Node
+        """
+
         if node.left is None:  # base case when there is no left node
             return node
         return self.minimum(node.left)
 
     def maximum(self, node):
+        """
+        Method to retrieve the max from the tree --> complexity ~ O(lg(n))
+        :param node: of class Node
+        :return: of class Node
+        """
+
         if node.right is None:
             return node
         return self.maximum(node.right)

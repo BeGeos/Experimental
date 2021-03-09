@@ -18,13 +18,17 @@ In the class, the following methods are provided and fully functional:
     * the value is without a constant value k to all the other values;
 * *search()*  : Search through the nodes for a specific value;
 * *minimum()*  : Return the minimum value in the tree;
-* *maximum()*  : Return the maximum value in the tree.
+* *maximum()*  : Return the maximum value in the tree;
 
-All these methods return an object of type *Node*. 
+All these methods (apart from *_height()*) return an object of type *Node*. 
 A node has attributes: 
 * **key**: indicates the value of the node;
 * **parent**: indicates the parent node; 
 * **height**: the steps for insertion;
+    * ***UPDATE (9/03)*** : the height is no more an attribute of the node.
+    Since the height is a dynamic attribute it would be extremely inefficient
+     to try and keep track of it. Instead, I have implemented a new method in the BST
+      class, namely *_height()* which recursively yields the height of a node, as integer;
 * **left**: indicates the left child;
 * **right**: indicates the right child.
 
@@ -35,8 +39,7 @@ In this case, the method are the aforementioned from the BST class as well as:
 in order to compute the height of a particular node;
 * *height()*  : It is a method and returns the height of a node.
 
-Both of these classes build a tree that has the *root* attribute. The value of the root's height in the AVL class
-is simply stored in the **root.height** attribute. 
+Both of these classes build a tree that has a **root** attribute. 
 
 The main difference between BSTs and AVLs is the fact that BSTs can be unbalanced, which means the complexity for 
 insert operation as well as search and delete is not *O(lg(n))* but could be *O(n)*. 
@@ -47,7 +50,21 @@ condition were to happen the tree has to be fixed.
 
 This *fix()* method hasn't been implemented, yet. 
 
+##### Recent Additions:
+* *_height()*  :  Return the height of an object of class Node, as integer. 
+It recursively calculate the height which is defined as the longest path from 
+a given node A to a leaf. In addition, the BST object has the **height** attribute
+ which indicates the height of the root;
+*  the entire class has been remodeled as inheritance of the BST class, therefore 
+all the previous methods have been included from it;
+* A new method has been added:
+    * *is_balanced()*  :  It executes a rapid check based on the height of every given 
+    node. In this case, balanced indicates that the difference between the right and left nodes' height 
+    must not be greater than 1;
+* also a **height** attribute has been added to the classes. 
+Read above to know more about it.
+
 ### TODO
 * Implement the *fix()* method in AVLs with rotation;
-* *Delete()* method to remove nodes fro tree;
+* *Delete()* method to remove nodes from tree;
 * Add docstrings to methods.

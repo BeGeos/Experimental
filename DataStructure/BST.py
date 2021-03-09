@@ -8,24 +8,22 @@
 
 class Node:
 
-    def __init__(self, key, height=0, parent=None):
+    def __init__(self, key, parent=None):
         self.key = key  # the actual number inside
         self.parent = parent
-        self.height = height
         self.left = None
         self.right = None
 
 
 class BST:
-    tree = []
-    position = 0
     max_height = 0
     k = 3
 
     def __init__(self, root, keys: list):
-        self.root = Node(root, self.position)
+        self.root = Node(root, 0)
         self.keys = keys
         self.build_tree()
+        self.height = self._height(self.root)
 
     def build_tree(self):
         """
@@ -37,24 +35,28 @@ class BST:
             self.insert(self.root, key)
         return
 
-    def insert(self, node, key):
+    def insert(self, node, key, parent_node=None):
         """
         An insert method with checks to keys for insertion
 
         :param node: of class Node, indicates a single node of the tree
         :param key: of class Any, indicates the value inserted in the node
+        :param parent_node: of class node, indicates which node is parent to the current node
         :return: of class Node, it return the node with attributes
         """
 
-        if node is None:
-            return Node(key)
+        if node is None:  # Actual insertion at left or right node
+            new_node = Node(key, parent_node)
+            return new_node
         else:
             if node.key == key:
                 return node
+
+            # Discern going left if less than or right if greater than...
             if key < node.key and self.is_available(node, key):
-                node.left = self.insert(node.left, key)
+                node.left = self.insert(node.left, key, node)
             elif key > node.key and self.is_available(node, key):
-                node.right = self.insert(node.right, key)
+                node.right = self.insert(node.right, key, node)
             else:
                 return
         return node
@@ -79,9 +81,8 @@ class BST:
     def inorder(self, node):
         if node:
             self.inorder(node.left)
-            self.tree.append(node.key)
+            print(node.key)
             self.inorder(node.right)
-        return self.tree
 
     def search(self, node, key):
         """
@@ -95,6 +96,21 @@ class BST:
         if key < node.key:
             return self.search(node.left, key)
         return self.search(node.right, key)
+
+    def _height(self, node):
+        """
+        Get the real height of the nodes other than the root.
+
+        Since the height changes with the insertion of new nodes, it is
+        a dynamic attribute that is difficult to track from the Node class.
+        This method copes with this fact, so the height won't be in memory
+        but every call will trigger the function which yields the height as
+        integer.
+        """
+
+        if node is None:
+            return - 1
+        return max(self._height(node.left), self._height(node.right)) + 1
 
     def minimum(self, node):
         """
@@ -114,68 +130,16 @@ class BST:
         :return: of class Node
         """
 
-        if node.right is None:
+        if node.right is None:  # base case when there is no right node
             return node
         return self.maximum(node.right)
 
 
 class AVL(BST):
     avl = []
-    position = 0
-    step = 0
 
-    def __init__(self, root, keys: list):
-        self.root = Node(root)
-        self.keys = keys
-        self.build_tree()
-        # self.tree = self.inorder(self.root)
-
-    def inorder(self, node):
-        if node:
-            self.inorder(node.left)
-            self.avl.append(node.key)
-            self.inorder(node.right)
-        return self.avl
-
-    def avl_insert(self, node, key, parent_node=None):
-        """
-            Parent Node: where I am coming from
-            Node: the position I am validating to put the key
-            Key: the actual number
-        """
-
-        if node is None:  # Actual insertion at left or right node
-            self.position += 1
-            if self.step >= self.root.height:
-                self.root.height = self.step
-            new_node = Node(key, self.step, parent_node)
-            self.step = 0
-            return new_node
-        else:
-            if node.key == key:
-                return node
-
-            # Discern going left if less than or right if greater than...
-            if key < node.key and self.is_available(node, key):
-                self.step += 1
-                node.left = self.avl_insert(node.left, key, node)
-            elif key > node.key and self.is_available(node, key):
-                self.step += 1
-                node.right = self.avl_insert(node.right, key, node)
-            else:
-                return
-        return node
-
-    def height(self, key):
-        """
-        Get the real height of the nodes other than the root.
-        For root's height root.height is sufficient.
-        """
-
-        node = self.search(self.root, key)
-        if node.left is None or node.right is None:
-            return 0
-        if node.key == self.root.key:
-            return self.root.height
-        return self.height(node.parent.key) - 1
-
+    # TODO avl_insert with check for height and rotation to fix balance
+    def is_balanced(self, node):
+        if abs(self._height(node.left) - self._height(node.right)) > 1:
+            return False
+        return True
